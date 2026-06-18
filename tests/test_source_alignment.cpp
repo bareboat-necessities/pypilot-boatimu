@@ -21,8 +21,8 @@ int main() {
     assert(boatimu_device_id_equal(arb.device_id(), "ocean0"));
 
     arb.set_timeout_us(100);
-    assert(!arb.poll_timeout(1250000));
-    assert(arb.poll_timeout(1300001));
+    assert(!arb.poll_timeout(1200050));
+    assert(arb.poll_timeout(1200101));
     assert(!arb.has_source());
 
     BoatImuAlignment<double> alignment;
