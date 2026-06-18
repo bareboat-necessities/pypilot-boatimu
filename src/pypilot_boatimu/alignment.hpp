@@ -40,6 +40,11 @@ inline Quaternion<Real> quaternion_multiply(const Quaternion<Real>& a, const Qua
 }
 
 template<typename Real>
+inline Quaternion<Real> quaternion_conjugate(const Quaternion<Real>& q) {
+    return Quaternion<Real>(q.w, -q.x, -q.y, -q.z);
+}
+
+template<typename Real>
 inline Quaternion<Real> quaternion_normalized(const Quaternion<Real>& q) {
     const Real n2 = quaternion_norm_squared(q);
     if (n2 <= static_cast<Real>(0)) {
@@ -67,17 +72,50 @@ inline Quaternion<Real> quaternion_from_euler_zyx(Real roll_deg, Real pitch_deg,
 }
 
 template<typename Real>
+inline Quaternion<Real> alignment_quaternion(const BoatImuAlignment<Real>& alignment) {
+    return quaternion_from_euler_zyx(
+        alignment.roll_offset_deg,
+        alignment.pitch_offset_deg,
+        alignment.yaw_offset_deg + alignment.heading_offset_deg);
+}
+
+template<typename Real>
+inline Vector3<Real> rotate_vector(const Vector3<Real>& v, const Quaternion<Real>& rotation) {
+    const Quaternion<Real> r = quaternion_normalized(rotation);
+    const Quaternion<Real> p(static_cast<Real>(0), v.x, v.y, v.z);
+    const Quaternion<Real> out = quaternion_multiply(quaternion_multiply(r, p), quaternion_conjugate(r));
+    return Vector3<Real>(out.x, out.y, out.z);
+}
+
+template<typename Real>
+inline Vector3<Real> align_vector(const Vector3<Real>& v, const BoatImuAlignment<Real>& alignment) {
+    return rotate_vector(v, alignment_quaternion(alignment));
+}
+
+template<typename Real>
 inline Real align_heading_deg(Real heading_deg, const BoatImuAlignment<Real>& alignment) {
     return normalize_heading_360(heading_deg + alignment.yaw_offset_deg + alignment.heading_offset_deg);
 }
 
 template<typename Real>
 inline Quaternion<Real> align_quaternion(const Quaternion<Real>& q, const BoatImuAlignment<Real>& alignment) {
-    const Quaternion<Real> mounting = quaternion_from_euler_zyx(
-        alignment.roll_offset_deg,
-        alignment.pitch_offset_deg,
-        alignment.yaw_offset_deg + alignment.heading_offset_deg);
-    return quaternion_normalized(quaternion_multiply(mounting, q));
+    return quaternion_normalized(quaternion_multiply(alignment_quaternion(alignment), q));
+}
+
+template<typename Real>
+inline CalibratedImuSample<Real> apply_alignment(const CalibratedImuSample<Real>& sample,
+                                                 const BoatImuAlignment<Real>& alignment) {
+    CalibratedImuSample<Real> out = sample;
+    if (out.has_accel) {
+        out.accel_mps2 = align_vector(out.accel_mps2, alignment);
+    }
+    if (out.has_gyro) {
+        out.gyro_rps = align_vector(out.gyro_rps, alignment);
+    }
+    if (out.has_mag) {
+        out.mag_uT = align_vector(out.mag_uT, alignment);
+    }
+    return out;
 }
 
 template<typename Real>
