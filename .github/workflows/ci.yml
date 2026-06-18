@@ -10,8 +10,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Checkout data model dependency
+        uses: actions/checkout@v4
+        with:
+          repository: bareboat-necessities/pypilot-data-model
+          path: deps/pypilot-data-model
+
       - name: Configure
-        run: cmake -S . -B build
+        run: cmake -S . -B build -DPYPILOT_DATA_MODEL_DIR=$PWD/deps/pypilot-data-model/src
 
       - name: Build
         run: cmake --build build --parallel
@@ -24,6 +30,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Checkout data model dependency
+        uses: actions/checkout@v4
+        with:
+          repository: bareboat-necessities/pypilot-data-model
+          path: deps/pypilot-data-model
+
       - uses: arduino/setup-arduino-cli@v2
 
       - name: Install AVR core
@@ -32,4 +44,4 @@ jobs:
           arduino-cli core install arduino:avr
 
       - name: Compile Arduino example
-        run: arduino-cli compile --fqbn arduino:avr:mega --libraries . examples/arduino/BoatImuSamplesExample
+        run: arduino-cli compile --fqbn arduino:avr:mega --libraries . --libraries deps/pypilot-data-model examples/arduino/BoatImuSamplesExample
