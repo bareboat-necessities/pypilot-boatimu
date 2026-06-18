@@ -33,10 +33,10 @@ The original PyPilot project supports RTIMULib2-based IMU workflows. This C++ po
 - Stale source timeout handling.
 - Mounting alignment helpers for calibrated IMU vectors, heading, Euler attitude, quaternion attitude, and marine-motion samples.
 - Runtime coordinator that accepts calibrated IMU, fused attitude, heading, and marine-motion samples.
+- Data-model writer for heading, roll, pitch, heel, heading rate, quaternion pose, calibrated accel/gyro/mag, source kind, device id, and timestamps.
 
 ## Planned additions
 
-- Data-model writer.
 - Optional RTIMULib2 adapter.
 - Optional ocean-imu adapter.
 - Replay and generic transport adapters.
@@ -44,7 +44,7 @@ The original PyPilot project supports RTIMULib2-based IMU workflows. This C++ po
 ## Build on Linux
 
 ```bash
-cmake -S . -B build
+cmake -S . -B build -DPYPILOT_DATA_MODEL_DIR=/path/to/pypilot-data-model/src
 cmake --build build --parallel
 ctest --test-dir build --output-on-failure
 ```
@@ -52,5 +52,5 @@ ctest --test-dir build --output-on-failure
 ## Arduino compile smoke test
 
 ```bash
-arduino-cli compile --fqbn arduino:avr:mega --libraries . examples/arduino/BoatImuSamplesExample
+arduino-cli compile --fqbn arduino:avr:mega --libraries . --libraries /path/to/pypilot-data-model examples/arduino/BoatImuSamplesExample
 ```
