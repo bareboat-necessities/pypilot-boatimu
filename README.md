@@ -34,12 +34,18 @@ The original PyPilot project supports RTIMULib2-based IMU workflows. This C++ po
 - Mounting alignment helpers for calibrated IMU vectors, heading, Euler attitude, quaternion attitude, and marine-motion samples.
 - Runtime coordinator that accepts calibrated IMU, fused attitude, heading, and marine-motion samples.
 - Data-model writer for heading, roll, pitch, heel, heading rate, quaternion pose, calibrated accel/gyro/mag, source kind, device id, and timestamps.
+- Adapter headers:
+  - generic calibrated sample adapter
+  - generic fused attitude adapter
+  - replay/test adapter
+  - RTIMULib2 adapter stub
+  - ocean-imu adapter stub
 
 ## Planned additions
 
-- Optional RTIMULib2 adapter.
-- Optional ocean-imu adapter.
-- Replay and generic transport adapters.
+- Full RTIMULib2 backend binding.
+- Full ocean-imu backend binding.
+- Transport-specific adapters for serial, network, CAN, NMEA, SignalK, and replay files.
 
 ## Build on Linux
 
