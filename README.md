@@ -31,12 +31,12 @@ The original PyPilot project supports RTIMULib2-based IMU workflows. This C++ po
 - Sample validation helpers.
 - Source/device arbitration.
 - Stale source timeout handling.
-- Mounting alignment helpers for heading, Euler attitude, quaternion attitude, and marine-motion samples.
+- Mounting alignment helpers for calibrated IMU vectors, heading, Euler attitude, quaternion attitude, and marine-motion samples.
+- Runtime coordinator that accepts calibrated IMU, fused attitude, heading, and marine-motion samples.
 
 ## Planned additions
 
 - Data-model writer.
-- Runtime coordinator.
 - Optional RTIMULib2 adapter.
 - Optional ocean-imu adapter.
 - Replay and generic transport adapters.
