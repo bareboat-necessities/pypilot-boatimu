@@ -16,9 +16,13 @@ target_link_libraries(test_boatimu_samples PRIVATE pypilot_boatimu)
 add_executable(test_boatimu_source_alignment tests/test_source_alignment.cpp)
 target_link_libraries(test_boatimu_source_alignment PRIVATE pypilot_boatimu)
 
+add_executable(test_boatimu_runtime tests/test_runtime.cpp)
+target_link_libraries(test_boatimu_runtime PRIVATE pypilot_boatimu)
+
 add_executable(boatimu_print_samples examples/linux/print_boatimu_samples.cpp)
 target_link_libraries(boatimu_print_samples PRIVATE pypilot_boatimu)
 
 enable_testing()
 add_test(NAME test_boatimu_samples COMMAND test_boatimu_samples)
 add_test(NAME test_boatimu_source_alignment COMMAND test_boatimu_source_alignment)
+add_test(NAME test_boatimu_runtime COMMAND test_boatimu_runtime)
