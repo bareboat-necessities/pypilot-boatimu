@@ -18,9 +18,7 @@ The original PyPilot project supports RTIMULib2-based IMU workflows. This C++ po
 - Keep source calibration separate from boat mounting alignment.
 - Allow optional adapters for RTIMULib2 and ocean-imu without forcing those dependencies into the core module.
 
-## Phase 7.0 / 7.1 contents
-
-Implemented now:
+## Current contents
 
 - Repository scaffold.
 - Linux CMake build and tests.
@@ -30,9 +28,18 @@ Implemented now:
   - `FusedAttitudeSample`
   - `HeadingSample`
   - `MarineMotionSample`
-- Small validation helpers for sample sanity checks.
+- Sample validation helpers.
+- Source/device arbitration.
+- Stale source timeout handling.
+- Mounting alignment helpers for heading, Euler attitude, quaternion attitude, and marine-motion samples.
 
-Later phases will add source arbitration, timeout handling, alignment transforms, data-model writing, and optional backend adapters.
+## Planned additions
+
+- Data-model writer.
+- Runtime coordinator.
+- Optional RTIMULib2 adapter.
+- Optional ocean-imu adapter.
+- Replay and generic transport adapters.
 
 ## Build on Linux
 
