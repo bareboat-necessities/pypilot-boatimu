@@ -8,7 +8,7 @@
 int main() {
     using namespace pypilot_boatimu;
 
-    pypilot_data_model::DataModel<double> model;
+    ship_data_model::DataModel<double> model;
     BoatImuRuntime<double> runtime;
 
     FusedAttitudeSample<double> fused;
